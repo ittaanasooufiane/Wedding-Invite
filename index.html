@@ -60,7 +60,31 @@
         }
 
         /* ==========================================================================
-           FONDS ET EFFET DE FLOU COMPATIBLE MOBILE (JAVASCRIPT TRIGGERED)
+           CONTROLE AUDIO PLAYER STYLE
+           ========================================================================== */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(245, 242, 235, 0.85);
+            border: 1px solid var(--text-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        .audio-control:active {
+            transform: scale(0.9);
+        }
+
+        /* ==========================================================================
+           FONDS ET EFFET DE FLOU COMPATIBLE MOBILE
            ========================================================================== */
         .bg-shared-palace {
             position: fixed;
@@ -72,11 +96,9 @@
             background-size: cover;
             background-position: center;
             z-index: -2;
-            /* Transition ultra-fluide pour le flou sur mobile */
             transition: filter 0.5s ease, -webkit-filter 0.5s ease;
         }
 
-        /* Classe activée dès qu'on quitte l'enveloppe */
         .bg-shared-palace.blurred {
             filter: blur(12px);
             -webkit-filter: blur(12px);
@@ -86,7 +108,6 @@
             background: rgba(0, 0, 0, 0.15); 
         }
 
-        /* La surcouche applique la teinte crème progressivement au scroll */
         .blur-overlay {
             position: absolute;
             top: 0;
@@ -99,7 +120,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* Activé en même temps que le flou */
         .blur-overlay.active {
             opacity: 1;
         }
@@ -115,7 +135,7 @@
         }
 
         /* ==========================================================================
-           ANIMATIONS INTERACTIVES RE-STABILISÉES
+           ANIMATIONS INTERACTIVES
            ========================================================================== */
         @keyframes pulseSeal {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(58, 77, 50, 0.4); }
@@ -242,23 +262,26 @@
 </head>
 <body>
 
-    <!-- Fond partagé -->
+    <audio id="wedding-music" src="music.mp3" loop></audio>
+
+    <div class="audio-control" onclick="toggleAudio()" id="audio-btn" style="display: none;">
+        <span id="audio-icon" style="font-size: 1.2rem; color: var(--text-dark);">🔊</span>
+    </div>
+
     <div id="shared-bg" class="bg-shared-palace"></div>
 
     <div class="scroll-container" id="main-scroller">
         
-        <!-- SECTION 1 : L'ENVELOPPE -->
         <section id="page-envelope">
             <div class="section-content">
                 <div class="invite-title">Ouvrir l'Invitation</div>
                 <div class="envelope-wrapper" onclick="openInvitation()">
-                    <div class="wedding-seal">&</div>
+                    <div class="wedding-seal" style="font-size: 1rem; font-family: 'Playfair Display', serif;">O&K</div>
                 </div>
             </div>
             <div class="scroll-hint" style="color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);">↓ Défiler pour ouvrir</div>
         </section>
 
-        <!-- SECTION 2 : LES MARIÉS -->
         <section id="page-names">
             <div id="target-overlay" class="blur-overlay"></div>
 
@@ -275,7 +298,6 @@
             <div class="scroll-hint">↓ Défiler pour voir la suite</div>
         </section>
 
-        <!-- SECTION 3 : COMPTE À REBOURS -->
         <section id="page-countdown">
             <div class="section-content">
                 <div class="countdown-heading">Le Compte à Rebours</div>
@@ -289,7 +311,6 @@
             <div class="scroll-hint">↓ Lieu de la cérémonie</div>
         </section>
 
-        <!-- SECTION 4 : LE LIEU -->
         <section id="page-venue">
             <div class="section-content">
                 <div class="venue-heading">Lieu du Mariage</div>
@@ -303,7 +324,6 @@
             <div class="scroll-hint">↓ Un mot de notre part</div>
         </section>
 
-        <!-- SECTION 5 : LA LETTRE -->
         <section id="page-letter">
             <div class="section-content">
                 <div class="letter-content">
@@ -323,17 +343,49 @@
         const bgShared = document.getElementById('shared-bg');
         const targetOverlay = document.getElementById('target-overlay');
         const scroller = document.getElementById('main-scroller');
+        
+        // Variables Audio
+        const music = document.getElementById('wedding-music');
+        const audioBtn = document.getElementById('audio-btn');
+        const audioIcon = document.getElementById('audio-icon');
+        let hasStarted = false;
+
+        // Fonction pour démarrer la musique proprement sur action utilisateur
+        function startMusic() {
+            if (!hasStarted) {
+                music.play().then(() => {
+                    hasStarted = true;
+                    audioBtn.style.display = 'flex'; // Fait apparaître le bouton Play/Pause
+                }).catch(err => console.log("Attente d'interaction pour l'audio."));
+            }
+        }
 
         function openInvitation() {
+            startMusic();
             document.getElementById('page-names').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Détecteur de défilement ultra-léger et fluide pour Mobile
+        // Gestion du bouton Play/Pause
+        function toggleAudio() {
+            if (music.paused) {
+                music.play();
+                audioIcon.innerHTML = "🔊";
+            } else {
+                music.pause();
+                audioIcon.innerHTML = "🔇";
+            }
+        }
+
+        // Détecteur de défilement (Flou + Trigger audio de secours)
         scroller.addEventListener('scroll', () => {
             const currentScroll = scroller.scrollTop;
             const windowHeight = window.innerHeight;
 
-            // Dès qu'on commence à glisser vers la page 2, on déclenche l'effet
+            // Si l'utilisateur scrolle manuellement au lieu de cliquer, on lance la musique aussi
+            if (currentScroll > 50) {
+                startMusic();
+            }
+
             if (currentScroll > windowHeight * 0.1) {
                 bgShared.classList.add('blurred');
                 targetOverlay.classList.add('active');
@@ -343,7 +395,7 @@
             }
         });
 
-        // Horloge cible
+        // Compte à rebours
         const targetDate = new Date("June 26, 2026 16:00:00").getTime();
         const countdownInterval = setInterval(function() {
             const now = new Date().getTime();

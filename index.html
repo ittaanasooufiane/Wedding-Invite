@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation de Mariage - Oumaima & Karim</title>
+    <!-- Polices élégantes et romantiques -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           CONFIGURATION DES ARRIÈRE-PLANS ET DE L'EFFET ATTÉNUÉ (DAMPED)
+           ========================================================================== */
+        :root {
+            /* Mettez ici vos images locales placées dans le même dossier */
+            --img-enveloppe: url('palace.png'); 
+            --img-noms: url('image_f1525f.png');
+            --img-compte-a-rebours: url('image_f0fba9.png');
+            --img-lieu: url('image_f0f78d.png');
+            --img-lettre: url('image_f0f489.png');
+
+            /* Ajustement du voile d'atténuation arrière-plan (de 0.0 à 1.0) */
+            --voile-sombre-enveloppe: rgba(0, 0, 0, 0.25);       
+            --voile-clair-noms: rgba(245, 242, 235, 0.85);       
+            --voile-vert-countdown: rgba(141, 164, 126, 0.88);   
+            --voile-clair-lieu: rgba(234, 240, 230, 0.88);       
+            --voile-or-lettre: rgba(223, 211, 195, 0.90);        
+
+            --text-dark: #3a4d32;
+            --cream: #f5f2eb;
+        }
+
+        /* ==========================================================================
+           STRUCTURE DE DÉFILEMENT (SNAP SCROLLING)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            /* Crée un contexte de défilement pour les animations CSS */
+            timeline-type: y;
+            scroll-timeline: --containerTimeline y;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            scroll-snap-align: start;
+            padding: 40px 20px;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* ==========================================================================
+           ANIMATIONS DE FONDU (FADE TRANSITIONS) AU DÉFILEMENT
+           ========================================================================== */
+        .section-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* Animation liée au défilement de l'écran */
+            animation: fadeTransition linear both;
+            animation-timeline: view();
+            animation-range: entry 10% exit 90%;
+        }
+
+        @keyframes fadeTransition {
+            0% { opacity: 0; transform: scale(0.95); filter: blur(3px); }
+            30% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            70% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(0.95); filter: blur(3px); }
+        }
+
+        /* Animations d'introduction (Page 1) */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseSeal {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(141, 164, 126, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(141, 164, 126, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(141, 164, 126, 0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        /* --- PAGE 1 : L'ENVELOPPE --- */
+        #page-envelope {
+            background-image: linear-gradient(var(--voile-sombre-enveloppe), var(--voile-sombre-enveloppe)), var(--img-enveloppe); 
+        }
+
+        .invite-title {
+            font-size: 1.9rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 45px;
+            letter-spacing: 5px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .envelope-wrapper {
+            cursor: pointer;
+            position: relative;
+            width: 280px;
+            height: 185px;
+            background-color: #d7bc9e;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .envelope-wrapper:hover { transform: scale(1.05); }
+
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 92.5px 140px 0 140px;
+            border-color: #c4a685 transparent transparent transparent;
+            z-index: 2;
+        }
+
+        .wedding-seal {
+            width: 52px;
+            height: 52px;
+            background-color: var(--text-dark);
+            border-radius: 50%;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--cream);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            border: 2px dashed rgba(255,255,255,0.3);
+            animation: pulseSeal 2s infinite;
+        }
+
+        /* --- PAGE 2 : LES MARIÉS --- */
+        #page-names {
+            background-image: linear-gradient(var(--voile-clair-noms), var(--voile-clair-noms)), var(--img-noms);
+        }
+
+        .names-title {
+            font-size: 3.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--text-dark);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .sub-details {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            color: #555;
+        }
+
+        .date-time { font-size: 1.4rem; letter-spacing: 1px; margin-top: 10px; }
+
+        /* --- PAGE 3 : COMPTE À REBOURS --- */
+        #page-countdown {
+            background-image: linear-gradient(var(--voile-vert-countdown), var(--voile-vert-countdown)), var(--img-compte-a-rebours);
+            color: #fff;
+        }
+
+        .countdown-heading {
+            font-size: 1.9rem;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .countdown-box {
+            background-color: rgba(245, 242, 235, 0.95);
+            color: var(--text-dark);
+            padding: 20px 10px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-number {
+            font-size: 2.4rem;
+            font-family: 'Playfair Display', serif;
+            display: block;
+            font-weight: bold;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* --- PAGE 4 : LIEU ET CARTE --- */
+        #page-venue {
+            background-image: linear-gradient(var(--voile-clair-lieu), var(--voile-clair-lieu)), var(--img-lieu);
+        }
+
+        .venue-heading {
+            font-size: 2.1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .venue-name {
+            font-size: 1.25rem;
+            color: #444;
+            margin-bottom: 5px;
+            max-width: 90%;
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 340px;
+            height: 270px;
+            margin-top: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- PAGE 5 : LA LETTRE --- */
+        #page-letter {
+            background-image: linear-gradient(var(--voile-or-lettre), var(--voile-or-lettre)), var(--img-lettre);
+            padding: 30px;
+        }
+
+        .letter-content {
+            max-width: 450px;
+            font-size: 1.3rem;
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .letter-content p { margin-bottom: 20px; }
+        .floral-divider { font-size: 1.2rem; margin: 15px 0; opacity: 0.5; }
+
+        /* Indicateur de défilement */
+        .scroll-hint {
+            position: absolute;
+            bottom: 25px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        /* --- POINT DE RUPTURE TABLETTE ET ORDINATEUR --- */
+        @media (min-width: 768px) {
+            .invite-title { font-size: 2.8rem; }
+            .envelope-wrapper { width: 340px; height: 220px; }
+            .envelope-wrapper::before { border-width: 110px 170px 0 170px; }
+            .names-title { font-size: 4.8rem; }
+            .sub-details { font-size: 1.3rem; }
+            .date-time { font-size: 1.8rem; }
+            .countdown-heading { font-size: 2.5rem; }
+            .countdown-grid { max-width: 420px; gap: 20px; }
+            .countdown-number { font-size: 3.2rem; }
+            .venue-heading { font-size: 2.8rem; }
+            .venue-name { font-size: 1.5rem; }
+            .map-container { max-width: 450px; height: 340px; }
+            .letter-content { font-size: 1.6rem; max-width: 580px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scroll-container">
+        
+        <!-- SECTION 1 : L'ENVELOPPE INTERACTIVE -->
+        <section id="page-envelope">
+            <!-- La première page n'a pas besoin de s'estomper immédiatement -->
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="invite-title">Ouvrir l'Invitation</div>
+                <div class="envelope-wrapper" onclick="openInvitation()">
+                    <div class="wedding-seal">&</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2 : LES MARIÉS & LA DATE -->
+        <section id="page-names">
+            <div class="section-content">
+                <div class="names-title">
+                    Oumaima & <br>Karim
+                </div>
+                <div class="sub-details">Aux côtés de leurs familles</div>
+                <div class="date-time">
+                    <strong>Vendredi • 26 Juin 2026</strong>
+                    <div style="font-size: 1.2rem; margin-top: 8px; opacity: 0.9;">À partir de 16:00</div>
+                </div>
+                <div class="scroll-hint">↓ Défiler pour voir la suite</div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 : COMPTE À REBOURS -->
+        <section id="page-countdown">
+            <div class="section-content">
+                <div class="countdown-heading">Le Compte à Rebours</div>
+                <div class="countdown-grid">
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Jours</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Heures</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Secondes</span>
+                    </div>
+                </div>
+                <div class="scroll-hint">↓ Lieu de la cérémonie</div>
+            </div>
+        </section>
+
+        <!-- SECTION 4 : LE LIEU & LA CARTE INTERACTIVE -->
+        <section id="page-venue">
+            <div class="section-content">
+                <div class="venue-heading">Lieu du Mariage</div>
+                <div class="venue-name">Four Seasons Hotel Cairo at Nile Plaza</div>
+                <div class="venue-name" style="font-size: 1.1rem; opacity: 0.7;">Le Caire, Égypte</div>
+                
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.3435889240445!2d31.23114947629555!3d30.02704381941611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c49da5259b%3A0x6e901a8864d25725!2sFour%20Seasons%20Hotel%20Cairo%20at%20Nile%20Plaza!5e0!3m2!1sfr!2sfr!4v1710000000000!5m2!1sfr!2sfr" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <div class="scroll-hint">↓ Un mot de notre part</div>
+            </div>
+        </section>
+
+        <!-- SECTION 5 : LA LETTRE -->
+        <section id="page-letter">
+            <div class="section-content">
+                <div class="letter-content">
+                    <p>Le cœur rempli d'amour et de joie, nous vous invitons chaleureusement à célébrer le plus beau jour de notre vie.</p>
+                    <div class="floral-divider">✿</div>
+                    <p>Votre présence à nos côtés rendra cette journée unique, précieuse et inoubliable.</p>
+                    <div class="floral-divider">✿</div>
+                    <p>Rejoignez-nous pour une soirée d'élégance partagée, bercée d'amour, de rires et de souvenirs éternels.</p>
+                </div>
+                <div style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-top: 25px; font-style: italic;">
+                    Oumaima & Karim
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Transition fluide au clic sur l'enveloppe
+        function openInvitation() {
+            document.getElementById('page-names').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Configuration de l'horloge cible pour le 26 Juin 2026
+        const targetDate = new Date("June 26, 2026 18:00:00").getTime();
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (difference < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".countdown-heading").innerHTML = "C'est le grand jour !";
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

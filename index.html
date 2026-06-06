@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitation de Mariage - Oumaima & Karim</title>
-    <!-- Elegant romantic fonts -->
+    <!-- Polices élégantes et romantiques -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           BACKGROUND IMAGES AND OPACITY CONFIGURATION
+           CONFIGURATION DES ARRIÈRE-PLANS ET DE L'EFFET ATTÉNUÉ (DAMPED)
            ========================================================================== */
         :root {
-            /* Free high-quality online placeholder images (Perfect for GitHub Pages) */
-            --img-enveloppe: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200'); 
-            --img-noms: url('https://images.unsplash.com/photo-1519225495810-7512c696505a?q=80&w=1200');
-            --img-compte-a-rebours: url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200');
-            --img-lieu: url('https://images.unsplash.com/photo-1545232979-8bf34eb9757b?q=80&w=1200');
-            --img-lettre: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200');
+            /* Mettez ici vos images locales placées dans le même dossier */
+            --img-enveloppe: url('palace.png'); 
+            --img-noms: url('image_f1525f.png');
+            --img-compte-a-rebours: url('image_f0fba9.png');
+            --img-lieu: url('image_f0f78d.png');
+            --img-lettre: url('image_f0f489.png');
 
-            /* Opacity Overlays (0.0 to 1.0) */
-            --voile-sombre-enveloppe: rgba(0, 0, 0, 0.35);       
+            /* Ajustement du voile d'atténuation arrière-plan (de 0.0 à 1.0) */
+            --voile-sombre-enveloppe: rgba(0, 0, 0, 0.25);       
             --voile-clair-noms: rgba(245, 242, 235, 0.85);       
             --voile-vert-countdown: rgba(141, 164, 126, 0.88);   
             --voile-clair-lieu: rgba(234, 240, 230, 0.88);       
@@ -33,7 +33,7 @@
         }
 
         /* ==========================================================================
-           SCROLL SNAPPING STRUCTURE
+           STRUCTURE DE DÉFILEMENT (SNAP SCROLLING)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -57,6 +57,7 @@
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
+            /* Crée un contexte de défilement pour les animations CSS */
             timeline-type: y;
             scroll-timeline: --containerTimeline y;
         }
@@ -65,11 +66,11 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Pushes content to center, hints to bottom */
+            justify-content: space-between; /* Change configuration to isolate the bottom elements */
             align-items: center;
             position: relative;
             scroll-snap-align: start;
-            padding: 50px 20px 30px 20px; /* Safe padding for bottom hints */
+            padding: 60px 20px 30px 20px; /* Safe padding zones */
             text-align: center;
             background-size: cover;
             background-position: center;
@@ -77,30 +78,30 @@
         }
 
         /* ==========================================================================
-           SCROLL FADE ANIMATIONS
+           ANIMATIONS DE FONDU (FADE TRANSITIONS) AU DÉFILEMENT
            ========================================================================== */
         .section-content {
             width: 100%;
-            flex-grow: 1;
+            flex-grow: 1; /* Allows the content area to naturally stay centered */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             
-            /* Linked to scroll timeline */
+            /* Animation liée au défilement de l'écran */
             animation: fadeTransition linear both;
             animation-timeline: view();
             animation-range: entry 10% exit 90%;
         }
 
         @keyframes fadeTransition {
-            0% { opacity: 0; transform: scale(0.97); filter: blur(3px); }
+            0% { opacity: 0; transform: scale(0.95); filter: blur(3px); }
             30% { opacity: 1; transform: scale(1); filter: blur(0px); }
             70% { opacity: 1; transform: scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: scale(0.97); filter: blur(3px); }
+            100% { opacity: 0; transform: scale(0.95); filter: blur(3px); }
         }
 
-        /* Static entry animations for Page 1 */
+        /* Animations d'introduction (Page 1) */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-25px); }
             to { opacity: 1; transform: translateY(0); }
@@ -119,14 +120,14 @@
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-6px); }
-            60% { transform: translateY(-3px); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
         }
 
-        /* --- PAGE 1: ENVELOPE --- */
+        /* --- PAGE 1 : L'ENVELOPPE --- */
         #page-envelope {
             background-image: linear-gradient(var(--voile-sombre-enveloppe), var(--voile-sombre-enveloppe)), var(--img-enveloppe); 
-            justify-content: center; /* Center everything on the cover page */
+            justify-content: center; /* Keeps the landing cover completely centered */
         }
 
         .invite-title {
@@ -186,7 +187,7 @@
             animation: pulseSeal 2s infinite;
         }
 
-        /* --- PAGE 2: BRIDE & GROOM --- */
+        /* --- PAGE 2 : LES MARIÉS --- */
         #page-names {
             background-image: linear-gradient(var(--voile-clair-noms), var(--voile-clair-noms)), var(--img-noms);
         }
@@ -197,24 +198,20 @@
             font-style: italic;
             color: var(--text-dark);
             line-height: 1.1;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .sub-details {
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin: 15px 0;
+            margin: 20px 0;
             color: #555;
         }
 
-        .date-time { 
-            font-size: 1.4rem; 
-            letter-spacing: 1px; 
-            margin-top: 5px; 
-        }
+        .date-time { font-size: 1.4rem; letter-spacing: 1px; margin-top: 10px; }
 
-        /* --- PAGE 3: COUNTDOWN --- */
+        /* --- PAGE 3 : COMPTE À REBOURS --- */
         #page-countdown {
             background-image: linear-gradient(var(--voile-vert-countdown), var(--voile-vert-countdown)), var(--img-compte-a-rebours);
             color: #fff;
@@ -222,7 +219,7 @@
 
         .countdown-heading {
             font-size: 1.9rem;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             text-transform: uppercase;
             letter-spacing: 3px;
         }
@@ -238,14 +235,14 @@
         .countdown-box {
             background-color: rgba(245, 242, 235, 0.95);
             color: var(--text-dark);
-            padding: 18px 10px;
+            padding: 20px 10px;
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             backdrop-filter: blur(5px);
         }
 
         .countdown-number {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-family: 'Playfair Display', serif;
             display: block;
             font-weight: bold;
@@ -256,11 +253,11 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             opacity: 0.8;
-            margin-top: 3px;
+            margin-top: 5px;
             display: block;
         }
 
-        /* --- PAGE 4: VENUE & MAP --- */
+        /* --- PAGE 4 : LIEU ET CARTE --- */
         #page-venue {
             background-image: linear-gradient(var(--voile-clair-lieu), var(--voile-clair-lieu)), var(--img-lieu);
         }
@@ -269,21 +266,21 @@
             font-size: 2.1rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .venue-name {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: #444;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             max-width: 90%;
         }
 
         .map-container {
             width: 100%;
             max-width: 340px;
-            height: 240px;
-            margin-top: 15px;
+            height: 270px;
+            margin-top: 20px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.12);
@@ -291,49 +288,40 @@
 
         .map-container iframe { width: 100%; height: 100%; border: none; }
 
-        /* --- PAGE 5: THE LETTER --- */
+        /* --- PAGE 5 : LA LETTRE --- */
         #page-letter {
             background-image: linear-gradient(var(--voile-or-lettre), var(--voile-or-lettre)), var(--img-lettre);
-            padding: 40px 30px;
-            justify-content: center; /* Center the final letter page */
+            padding: 30px;
+            justify-content: center;
         }
 
         .letter-content {
             max-width: 450px;
             font-size: 1.3rem;
-            line-height: 1.6;
+            line-height: 1.7;
             font-style: italic;
         }
 
-        .letter-content p { margin-bottom: 15px; }
-        .floral-divider { font-size: 1.2rem; margin: 10px 0; opacity: 0.5; }
+        .letter-content p { margin-bottom: 20px; }
+        .floral-divider { font-size: 1.2rem; margin: 15px 0; opacity: 0.5; }
 
         /* 
-           FIXED HINT SYSTEM: Clean, natural flex item. 
-           Will NEVER overlap with elements above it.
+           FIXED INDICATOR SYSTEM:
+           No absolute tracking. Sits structurally below text layouts safely.
         */
         .scroll-hint {
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            opacity: 0.6;
-            margin-top: auto; /* Pushes it strictly to the bottom of the section padding */
-            padding-top: 15px;
-            animation: bounce 2s infinite, hintFade linear both;
-            animation-timeline: view();
-            animation-range: entry 10% exit 80%;
-            pointer-events: none;
+            opacity: 0.7;
+            margin-top: auto; /* Pushes element smoothly to the bottom grid area */
+            padding-top: 10px;
+            animation: bounce 2s infinite;
             width: 100%;
+            pointer-events: none;
         }
 
-        @keyframes hintFade {
-            0% { opacity: 0; }
-            40% { opacity: 0.6; }
-            60% { opacity: 0.6; }
-            100% { opacity: 0; }
-        }
-
-        /* --- TABLET AND DESKTOP RESPONSIVENESS --- */
+        /* --- POINT DE RUPTURE TABLETTE ET ORDINATEUR --- */
         @media (min-width: 768px) {
             .invite-title { font-size: 2.8rem; }
             .envelope-wrapper { width: 340px; height: 220px; }
@@ -355,7 +343,7 @@
 
     <div class="scroll-container">
         
-        <!-- SECTION 1: INTERACTIVE ENVELOPE COVER -->
+        <!-- SECTION 1 : L'ENVELOPPE INTERACTIVE -->
         <section id="page-envelope">
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <div class="invite-title">Ouvrir l'Invitation</div>
@@ -365,7 +353,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: BRIDE, GROOM & DATE -->
+        <!-- SECTION 2 : LES MARIÉS & LA DATE -->
         <section id="page-names">
             <div class="section-content">
                 <div class="names-title">
@@ -374,14 +362,14 @@
                 <div class="sub-details">Aux côtés de leurs familles</div>
                 <div class="date-time">
                     <strong>Vendredi • 26 Juin 2026</strong>
-                    <div style="font-size: 1.3rem; margin-top: 12px; opacity: 0.95;">À partir de 16:00</div>
+                    <div style="font-size: 1.2rem; margin-top: 8px; opacity: 0.9;">À partir de 16:00</div>
                 </div>
             </div>
-            <!-- Placed outside the content wrapper to completely block text collision -->
+            <!-- Placed outside section-content to completely resolve overlapping -->
             <div class="scroll-hint">↓ Défiler pour voir la suite</div>
         </section>
 
-        <!-- SECTION 3: REAL-TIME COUNTDOWN -->
+        <!-- SECTION 3 : COMPTE À REBOURS -->
         <section id="page-countdown">
             <div class="section-content">
                 <div class="countdown-heading">Le Compte à Rebours</div>
@@ -404,10 +392,11 @@
                     </div>
                 </div>
             </div>
+            <!-- Placed outside section-content -->
             <div class="scroll-hint">↓ Lieu de la cérémonie</div>
         </section>
 
-        <!-- SECTION 4: VENUE & GOOGLE MAPS MAP -->
+        <!-- SECTION 4 : LE LIEU & LA CARTE INTERACTIVE -->
         <section id="page-venue">
             <div class="section-content">
                 <div class="venue-heading">Lieu du Mariage</div>
@@ -423,10 +412,11 @@
                     </iframe>
                 </div>
             </div>
+            <!-- Placed outside section-content -->
             <div class="scroll-hint">↓ Un mot de notre part</div>
         </section>
 
-        <!-- SECTION 5: PERSONAL MESSAGE LETTER -->
+        <!-- SECTION 5 : LA LETTRE -->
         <section id="page-letter">
             <div class="section-content">
                 <div class="letter-content">
@@ -445,15 +435,15 @@
     </div>
 
     <script>
-        // Smoothly skip past envelope on tap
+        // Transition fluide au clic sur l'enveloppe
         function openInvitation() {
             document.getElementById('page-names').scrollIntoView({ 
                 behavior: 'smooth' 
             });
         }
 
-        // Live Dynamic Countdown Clock Configuration
-        const targetDate = new Date("June 26, 2026 16:00:00").getTime();
+        // Configuration de l'horloge cible pour le 26 Juin 2026
+        const targetDate = new Date("June 26, 2026 18:00:00").getTime();
 
         const countdownInterval = setInterval(function() {
             const now = new Date().getTime();
